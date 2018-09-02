@@ -3,7 +3,7 @@
 
 ## Problem Statement
 >Garry encrypted a message with his public key and mailed it to Monika. Sure Garry is an idiot. The intercepted mail is given below as seen from Monika's side. Decrypt the message to get the key.
-[interceptedMail.eml](http://example.com)
+[interceptedMail.eml](https://raw.githubusercontent.com/ketankr9/CodefestCTF18/master/writeups/static/interceptedMail_.eml)
 
 ## Solution
 It can be deduced from the ps that Garry must have also sent his private key along with the email, since Garry used his public key to encrypt the message the only way to decrypt it was with private key of Garry itself, hence he must have also sent his private key too along with the email so that Monika could decrypt it.  
