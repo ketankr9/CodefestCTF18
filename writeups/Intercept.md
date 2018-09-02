@@ -3,13 +3,15 @@
 
 ## Problem Statement
 >Garry encrypted a message with his public key and mailed it to Monika. Sure Garry is an idiot. The intercepted mail is given below as seen from Monika's side. Decrypt the message to get the key.
-[interceptedMail.eml](http://example.com)
+[interceptedMail.eml](http://example.com)  
+**Output Format**  
+CodefestCTF{flag}  
 
 ## Solution
 It can be deduced from the ps that Garry must have also sent his private key along with the email, since Garry used his public key to encrypt the message the only way to decrypt it was with private key of Garry itself, hence he must have also sent his private key too along with the email so that Monika could decrypt it.  
 So our first goal is to find the private key in the email.  
 
-First we extract the attachment from interceptedMail_.eml
+First we extract the attachment from interceptedMail_.eml, which includes removing delimiters and decoding bse64 encoded text.
 ```
 $$$\> cat interceptedMail_.eml | head -n2614 | tail -n2578 | tr -d "\n\r" | base64 --decode > attachment.zip
 ```
@@ -20,7 +22,7 @@ Archive:  attachment.zip
   inflating: flag.enc                
   inflating: Public_Key_Encryption_.docx
 ```
-We should know that [.docx] files are also unzippable, so basically anything can be hidden in it, which won't even show up if opened directly.
+Since [.docx] files are also unzippable, so basically anything can be hidden in it, which won't even show up if opened directly.
 ```
 $$$\> unzip Public_Key_Encryption_.docx
 Archive:  Public_Key_Encryption_.docx
@@ -64,7 +66,7 @@ $$$\> binwalk word/media/image1.png
   0             0x0             PNG image, 603 x 404, 8-bit/color RGBA, non-interlaced
   91            0x5B            Zlib compressed data, compressed
 ```
-If you just print the content of image.jpg you will find a RSA PRIVATE KEY appended to it.Simple copy it to a new file and correct its first line(RSA is missing).
+If you just print the content of image.jpg you will find a RSA PRIVATE KEY appended to it. Simple copy it to a new file and correct its first line(RSA is missing).
 ```
 $$$\> cat word/media/image1.png
 .......[omitted]........
