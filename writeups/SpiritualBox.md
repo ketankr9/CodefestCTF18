@@ -62,5 +62,6 @@ web3.eth.sendTransaction({from:web3.eth.defaultAccount ,to:'0x5b1869d9a4c187f2ea
 ```
 Where "0x5b1869d9a4c187f2eaa108f3062412ecf0526b24" is the address of **KillMe** contract.  
 * After having sent 69 Wei to KillMe contract, call its **selfDestruct** function to commit suicide and finally force its balance to the Spiritual Box address.  
-![KillMe.sol](http://example.com)  
-* Now submit address "0x5b1869d9a4c187f2eaa108f3062412ecf0526b24" at ```nc 34.216.132.109 9091``` to get the flag.
+
+![KillMe](https://github.com/ketankr9/CodefestCTF18/blob/master/writeups/static/killmeDeploy.png)  
+* Now submit address "0x9561C133DD8580860B6b7E504bC5Aa500f0f06a7" at ```nc 34.216.132.109 9091``` to get the flag.
