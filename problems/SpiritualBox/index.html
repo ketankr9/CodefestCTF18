@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+console.log("%cCodefest CTF'18", "background: yellow; color: black; font-size: x-large");
+var mMessage="Make sure Mist/Metamask extension is installed!\nYou are connected to the Ropsten network.\nClick <Get New Instance>";
+function helpme(){
+    console.log(mMessage);
+}
+window.addEventListener('load', function() {
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+        // Use Mist/MetaMask's provider
+        web3 = new Web3(web3.currentProvider);
+        // console.log("Already Injected");
+        initialize();
+    } else {
+        alert("Metamask Needed For this app!!!");
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+})
+    var code = "608060405234801561001057600080fd5b504260008190555060b6806100266000396000f300608060405260043610603f576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063ed88c68e146044575b600080fd5b604a604c565b005b426001819055506101f460005460015403118015606a575060053411155b801560755750600034115b1515607f57600080fd5b6001546000819055505600a165627a7a723058200e626a96bafe30796e2f608d8ac86c6cf8a5afe091556f51f1d01351bfe671ba0029";
+    var abi = [{"constant":false,"inputs":[],"name":"donate","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"}];
+    var account;
+    var Donationbox;
+    var mycontract;
+
+    function initialize(){
+        account = web3.eth.accounts[0];
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+        Donationbox = web3.eth.contract(abi);
+    }
+
+    function createNewContract() {
+        console.log("%cCreating new Contract... << Please Wait >>", "background: black; color: white; font-size: x-large");
+        
+        mycontract = Donationbox.new({from: account, gas: 1000000, data: code}, function(error, receipt){
+        if(error)
+            console.log(error);
+        else{
+            if(receipt.address !== undefined){  
+	            console.log("%cYour contract address " + receipt.address, "background: yellow; color: black; font-size: x-large");
+                console.log("For detailed info https://ropsten.etherscan.io/tx/"+receipt.transactionHash)
+                document.getElementById("logs").innerHTML += 'Contract mined! address: ' + mycontract.address + '<br/>transactionHash: ' + mycontract.transactionHash + "<br/>";
+                }
+                mMessage = "Now try to deposit the minimum Ether as mentioned!";
+            }
+
+        });
+    }
+
+    function checkStatus(){
+
+        // postAnswer(mycontract.address);
+        web3.eth.getBalance(mycontract.address, (err, res)=>{
+            if(!err){
+                console.log("%cCurrent Donation is: "+res.c[0], "background: black; color: white; font-size: x-large");
+                if(res.c[0] == 69){
+                    console.log("%cFlag_Captured now submit your contract address at nc 34.216.132.109 9091 to get the flag.", "background: black; color: white; font-size: x-large");
+                    mMessage = "You have already captured the flag!!!";
+                    }     
+                else
+                    console.log("%c!Flag_Captured", "background: black; color: white; font-size: x-large");
+            }else{
+                console.log(err);
+            }
+        });
+        
+    }
+
+</script>
+</head>
+<body>
+    <h1>Donationbox</h1>
+    <div id="problem">Donate exactly "69 Wei" in this "Spiritual Box", and Venus would shine upon you.</div>
+    <div id="procedure">
+        0. First get a contract instance here <button type="button" onClick="createNewContract();">Get New Instance</button></br>
+        1. Open browser console. Now you can interact with your contract with "mycontract".</br>
+        2. Do the hack, don't ask us how! :P </br>
+        3. Check if you have captured the flag. <button type="test/javascript" onclick="checkStatus();" >Check Status</button></br>
+    </div>
+    Note: Type helpme() for more.
+    <script src="https://gist.github.com/ketankr9/3d051f6dcd95e9029cc35da6100fcb6e.js"></script>
+    <div id="status"></div>
+     <hr/>
+    <h4>Logs</h4>
+    <div id="logs"></div>
+
+</body>
+</html>
+
